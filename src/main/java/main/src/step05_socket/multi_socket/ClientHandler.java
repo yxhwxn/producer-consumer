@@ -5,33 +5,39 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * 클라이언트 요청을 처리하는 핸들러 (스레드)
  */
-class ClientHandler implements Runnable {
-    private final Socket socket;
+class ClientHandler extends Thread {
+    private Socket clientSocket;
 
     public ClientHandler(Socket socket) {
-        this.socket = socket;
+        this.clientSocket = socket;
     }
 
     @Override
     public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+        System.out.println("클라이언트 스레드 ID: " + Thread.currentThread().getId()); // 스레드 ID 출력
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("클라이언트 (" + socket.getInetAddress() + ") 요청: " + inputLine);
-                out.println("서버 응답: " + inputLine); // 에코 응답
+                System.out.println("클라이언트 스레드 ID: " + Thread.currentThread().getId() + " 클라이언트로부터 수신: " + inputLine);
+                out.println(inputLine); // 클라이언트에게 에코
             }
-
+        } catch (SocketException e) {
+            System.out.println("클라이언트가 연결을 종료했습니다.");
         } catch (IOException e) {
-            System.out.println("클라이언트 연결 종료: " + socket.getInetAddress());
+            e.printStackTrace();
         } finally {
             try {
-                socket.close();
+                clientSocket.close();
+                System.out.println("클라이언트 연결 종료: " + clientSocket.getInetAddress());
+                MultiServer.isClientConnected = false; // 연결 종료 시 상태 변경
             } catch (IOException e) {
                 e.printStackTrace();
             }

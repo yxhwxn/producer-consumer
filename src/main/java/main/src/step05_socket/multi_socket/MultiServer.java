@@ -12,21 +12,19 @@ import java.util.concurrent.Executors;
  * 멀티 클라이언트를 처리할 수 있는 서버
  */
 public class MultiServer {
-    private static final int PORT = 5555;
-    private static final int THREAD_POOL_SIZE = 10; // 최대 동시 클라이언트 수 제한
+    public static boolean isClientConnected = false; // 클라이언트 연결 상태
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE); // 스레드 풀 생성
-
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("서버가 시작되었습니다. 클라이언트를 기다립니다...");
-
+        int port = 12345; // 서버 포트
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("서버가 시작되었습니다. 포트: " + port);
             while (true) {
-                Socket clientSocket = serverSocket.accept(); // 클라이언트 연결 대기
-                System.out.println("클라이언트 연결됨: " + clientSocket.getInetAddress());
+                Socket clientSocket = serverSocket.accept();
+                isClientConnected = true; // 클라이언트 연결 상태 설정
+                System.out.println("클라이언트 연결: " + clientSocket.getInetAddress());
 
-                // 새로운 클라이언트 처리 스레드 실행
-                executorService.execute(new ClientHandler(clientSocket));
+                // 클라이언트와의 통신을 위한 스레드 생성
+                new ClientHandler(clientSocket).start();
             }
         } catch (IOException e) {
             e.printStackTrace();

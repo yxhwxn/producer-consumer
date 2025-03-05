@@ -1,17 +1,13 @@
-package main.src.step05_socket.multi_socket;
+package main.src.step05_socket.multi_client;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 멀티 클라이언트를 처리할 수 있는 서버
  */
-public class MultiServer {
+public class SimpleServer {
     public static boolean isClientConnected = false; // 클라이언트 연결 상태
 
     public static void main(String[] args) {

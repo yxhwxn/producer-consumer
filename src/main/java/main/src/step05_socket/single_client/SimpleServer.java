@@ -1,4 +1,4 @@
-package main.src.step05_socket.single_socket;
+package main.src.step05_socket.single_client;
 
 import java.io.IOException;
 import java.io.InputStream;

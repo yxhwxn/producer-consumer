@@ -1,4 +1,4 @@
-package main.src.step05_socket.multi_socket;
+package main.src.step05_socket.multi_client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +37,7 @@ class ClientHandler extends Thread {
             try {
                 clientSocket.close();
                 System.out.println("클라이언트 연결 종료: " + clientSocket.getInetAddress());
-                MultiServer.isClientConnected = false; // 연결 종료 시 상태 변경
+                SimpleServer.isClientConnected = false; // 연결 종료 시 상태 변경
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,4 +1,4 @@
-package main.src.step05_socket.multi_socket;
+package main.src.step05_socket.multi_client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class MultiClient {
+public class SimpleClient {
     public static void main(String[] args) {
         final String SIMPLE_SERVER_IP = "127.0.0.1";
         final int SERVER_PORT = 5555;

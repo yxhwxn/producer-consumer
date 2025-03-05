@@ -1,4 +1,4 @@
-package main.src.step05_socket;
+package main.src.step05_socket.single_socket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
